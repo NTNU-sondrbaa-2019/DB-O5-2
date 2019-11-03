@@ -34,9 +34,8 @@ class DisneyTest extends \Codeception\Test\Unit
         $this->tester->assertTrue(key_exists('James Earl Jones', $list));
         $this->tester->assertEquals(3, count($list['James Earl Jones']));
         $this->tester->assertTrue(in_array('As Mufasa in The Lion King (2019)', $list['James Earl Jones']));
-        // To be tested:
-        // Actor Rizwan Ahmed should be in the list
-        // Actor Rizwan Ahmed has not played in any of the movies in the document
+        $this->tester->assertTrue(key_exists('Rizwan Ahmed', $list));
+        $this->tester->assertEquals(0, count($list['Rizwan Ahmed']));
     }
 
     /**
@@ -48,10 +47,9 @@ class DisneyTest extends \Codeception\Test\Unit
         $this->disney->removeUnreferencedActors();
         $list = $this->disney->getActorStatistics();
         codecept_debug($list);
-        // To be tested:
-        // There should now be only 89 actors in the list
-        // Actor Rizwan Ahmed should not be in the list
-        // Actor Erik Thomas von Detten should not be in the list
+        $this->tester->assertEquals(89, count($list));
+        $this->tester->assertFalse(key_exists('Rizwan Ahmed', $list));
+        $this->tester->assertFalse(key_exists('Erik Thomas von Detten', $list));
     }
 
     /**
@@ -68,12 +66,9 @@ class DisneyTest extends \Codeception\Test\Unit
         $roleActor = 'TomHiddleston';
         $actorName = 'Tom Hiddleston';
 
-        $this->disney->addRole($subsidiaryId, $movieName, $movieYear, $roleName,
-                               $roleActor);
+        $this->disney->addRole($subsidiaryId, $movieName, $movieYear, $roleName, $roleActor);
         $list = $this->disney->getActorStatistics();
         codecept_debug($list);
-        // To be tested:
-        // The array of roles that Tom Hiddleston has played should now show
-        // that he played as Loki in Avengers: Infinity War (2018)
+        $this->tester->assertTrue(in_array('As Loki in Avengers: Infinity War (2018)', $list[$actorName]));
     }
 }

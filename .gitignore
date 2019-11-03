@@ -3,3 +3,4 @@ composer.*
 vendor/*
 tests/*
 !tests/unit
+.idea
